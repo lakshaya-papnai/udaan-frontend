@@ -1,7 +1,7 @@
 import { createContext, useState, useEffect, useContext } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import api from '../api'; 
+import api from '../api';
+import { toast } from 'react-toastify'; // Make sure toast is imported
 
 // 1. Create the context
 const AuthContext = createContext();
@@ -13,40 +13,44 @@ export const AuthProvider = ({ children }) => {
 
   // 3. Check if user is logged in on initial load
   useEffect(() => {
-    const storedUser = localStorage.getItem('userInfo');
+    // Corrected to use 'user' to match your other components
+    const storedUser = localStorage.getItem('user');
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }
   }, []);
 
-  // 4. Login function
+  // 4. Login function with error handling
   const login = async (email, password) => {
     try {
       const { data } = await api.post('/auth/login', { email, password });
-      localStorage.setItem('userInfo', JSON.stringify(data));
+      localStorage.setItem('user', JSON.stringify(data));
       setUser(data);
+      toast.success(`Welcome back, ${data.name}!`);
       navigate('/'); // Redirect to homepage on successful login
     } catch (error) {
-      console.error('Login failed', error);
-      // Here you would set an error state to show the user
+      const message = error.response?.data?.message || 'Invalid email or password.';
+      toast.error(message);
     }
   };
 
-  // 5. Register function
+  // 5. Register function with error handling
   const register = async (name, email, password) => {
     try {
       const { data } = await api.post('/auth/register', { name, email, password });
-      localStorage.setItem('userInfo', JSON.stringify(data));
+      localStorage.setItem('user', JSON.stringify(data));
       setUser(data);
+      toast.success(`Welcome, ${data.name}!`);
       navigate('/'); // Redirect to homepage on successful registration
     } catch (error) {
-      console.error('Registration failed', error);
+      const message = error.response?.data?.message || 'Registration failed. Please try again.';
+      toast.error(message);
     }
   };
 
   // 6. Logout function
   const logout = () => {
-    localStorage.removeItem('userInfo');
+    localStorage.removeItem('user');
     setUser(null);
     navigate('/login');
   };
@@ -54,7 +58,7 @@ export const AuthProvider = ({ children }) => {
   return (
     <AuthContext.Provider value={{ user, login, register, logout }}>
       {children}
-    </AuthContext.Provider>
+    </Auth-Context.Provider>
   );
 };
 
