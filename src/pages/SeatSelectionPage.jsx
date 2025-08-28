@@ -4,6 +4,7 @@ import axios from 'axios';
 import io from 'socket.io-client';
 import { useAuth } from '../context/AuthContext';
 import Seat from '../components/Seat';
+import api from '../api'; 
 import LoadingSpinner from '../components/LoadingSpinner';
 import { IndianRupee, LogIn } from 'lucide-react';
 import bgImage from '../assets/splash-screen-img.png'; 
@@ -22,7 +23,7 @@ const SeatSelectionPage = () => {
   useEffect(() => {
     const fetchFlight = async () => {
       try {
-        const { data } = await axios.get(`/api/flights/${id}`);
+        const { data } = await api.get(`/flights/${id}`);
         setFlight(data);
       } catch (error) {
         console.error('Error fetching flight details:', error);
