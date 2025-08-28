@@ -1,6 +1,7 @@
 import { createContext, useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import api from '../api'; 
 
 // 1. Create the context
 const AuthContext = createContext();
@@ -21,7 +22,7 @@ export const AuthProvider = ({ children }) => {
   // 4. Login function
   const login = async (email, password) => {
     try {
-      const { data } = await axios.post('/api/auth/login', { email, password });
+      const { data } = await api.post('/auth/login', { email, password });
       localStorage.setItem('userInfo', JSON.stringify(data));
       setUser(data);
       navigate('/'); // Redirect to homepage on successful login
@@ -34,7 +35,7 @@ export const AuthProvider = ({ children }) => {
   // 5. Register function
   const register = async (name, email, password) => {
     try {
-      const { data } = await axios.post('/api/auth/register', { name, email, password });
+      const { data } = await api.post('/auth/register', { name, email, password });
       localStorage.setItem('userInfo', JSON.stringify(data));
       setUser(data);
       navigate('/'); // Redirect to homepage on successful registration
