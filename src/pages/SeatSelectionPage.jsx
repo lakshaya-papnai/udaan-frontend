@@ -61,39 +61,29 @@ const SeatSelectionPage = () => {
   };
 
   const handleBookSeat = async () => {
-    if (!selectedSeat) {
-      toast.warn('Please select a seat first.');
-      return;
-    }
-    if (!user) {
-      setShowLoginPrompt(true);
-      return;
-    }
+  if (!selectedSeat) {
+    toast.warn('Please select a seat first.');
+    return;
+  }
+  if (!user) {
+    setShowLoginPrompt(true);
+    return;
+  }
 
-    toast.promise(
-      // THE FIX IS HERE: Use the 'api' helper for the POST request
-      api.post(
-        '/bookings', // The URL is now just '/bookings'
-        { flightId: id, seatNumber: selectedSeat },
-        { headers: { Authorization: `Bearer ${user.token}` } }
-      ),
-      {
-        pending: 'Confirming your booking...',
-        success: {
-          render(){
-            navigate('/success');
-            return 'Booking confirmed!';
-          }
-        },
-        error: {
-          render({ data }){
-            return data.response?.data?.message || 'Booking failed. Please try again.';
-          }
-        }
-      }
+  try {
+    const res = await api.post(
+      '/bookings',
+      { flightId: id, seatNumber: selectedSeat },
+      { headers: { Authorization: `Bearer ${user.token}` } }
     );
-  };
-
+    // On success:
+    toast.success('Booking confirmed!');
+    navigate('/success');
+  } catch (error) {
+    // On error:
+    toast.error(error.response?.data?.message || 'Booking failed. Please try again.');
+  }
+};
   if (!flight) {
     return <div className="min-h-screen flex items-center justify-center bg-slate-100"><LoadingSpinner /></div>;
   }
