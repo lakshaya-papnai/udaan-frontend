@@ -2,8 +2,7 @@
 
 **Live Demo:** [https://your-live-app-link.com](https://your-live-app-link.com)
 
-![Udaan Application Screenshot](https://i.imgur.com/your-screenshot-url.png)
-
+![Udaan Application Screenshot](./screenshot/image.png)
 ## 📖 Overview
 
 Udaan is a complete, full-stack flight booking application built with the MERN stack. It provides a seamless user experience for searching, finding, and booking flights. The standout feature is the "Smart Route" functionality, which leverages Dijkstra's algorithm to find the cheapest multi-stop flight path, demonstrating a strong application of computer science fundamentals in a real-world scenario. The application also features real-time seat availability updates using Socket.IO to prevent double-bookings.
