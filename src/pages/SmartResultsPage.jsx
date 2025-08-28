@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import axios from 'axios';
 import LoadingSpinner from '../components/LoadingSpinner';
+import api from '../api';
 import { PlaneTakeoff, PlaneLanding, Clock, IndianRupee, Sparkles } from 'lucide-react';
 import bgImage from '../assets/splash-screen-img.png';
 
@@ -18,7 +19,7 @@ const SmartResultsPage = () => {
     const fetchRoute = async () => {
       try {
         setLoading(true);
-        const { data } = await axios.get('/api/flights/route', { params: { source, destination } });
+        const { data } = await api.get('/flights/route', { params: { source, destination } });
         setRoute(data);
       } catch (err) {
         setError(err.response?.data?.message || 'Could not find a route.');
