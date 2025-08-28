@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { Ticket, Plane, Clock } from 'lucide-react';
+import api from '../api'; 
 
 const MyBookingsPage = () => {
   const [bookings, setBookings] = useState([]);
@@ -26,7 +27,7 @@ const MyBookingsPage = () => {
             Authorization: `Bearer ${user.token}`,
           },
         };
-        const { data } = await axios.get('/api/bookings/mybookings', config);
+        const { data } = await api.get('/bookings/mybookings', config);
         setBookings(data);
       } catch (err) {
         setError('Could not fetch your bookings. Please try again later.');
