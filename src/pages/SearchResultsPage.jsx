@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
+import api from '../api'; 
 import axios from 'axios';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { PlaneTakeoff, PlaneLanding, Clock, IndianRupee, CalendarDays } from 'lucide-react';
@@ -24,7 +25,7 @@ const SearchResultsPage = () => {
         const params = { source, destination };
         if (date) params.date = date;
 
-        const { data } = await axios.get('/api/flights/search', { params });
+        const { data } = await api.get('/flights/search', { params });
         setFlights(data);
       } catch (err) {
         console.error('API Error:', err.response?.data || err.message);
